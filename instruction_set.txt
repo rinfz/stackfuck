@@ -1,10 +1,10 @@
-	P - Push character onto stack (xxx - Number, xC - Character)
-	T - Set variable to top of stack (xxxxx)
-	V - Push variable value to top of stack (xxxxx)
-	C - Create new buffer
-	S - Select buffer (xxxxx)
-	O - Print current buffer
-	I - Read line and set to buffer
+	P - Push character onto stack (xxx - Number, xC - Character) [done] push()
+	T - Set variable to top of stack (xxxxx) [done] toTop()
+	V - Push variable value to top of stack (xxxxx) [done] pushTop()
+	C - Create new buffer [done] newBuffer()
+	S - Select buffer (xxxxx) [done] selectBuffer()
+	O - Print current buffer [done] printBuffer()
+	I - Read line and set to buffer [done] readInput()
 	G - Goto xxxxx if top is non-zero
 	g - Relative goto
 	N - Goto xxxxx if top is zero
