@@ -27,6 +27,7 @@ class SfCommands:
 		self.bufferArray = []
 		self.stack = []
 		self.currentBufferData = {}
+		self.prevBufferData = [{}]
 
 	def push(self, v):
 		"""
@@ -80,8 +81,16 @@ class SfCommands:
 		self.bufferCount += 1
 
 	def selectBuffer(self, bufferName):
+		"""
+			Changes current buffer to user specified one
+		"""
 		self.currentBuffer = bufferName
-		self.currentBufferData = {bufferName: ""}
+		# use dict for buffer name => data in the buffer
+		# need to fix: memory for retaining previous data when moving between buffers
+		if self.prevBufferData:
+			self.currentBufferData = {bufferName: self.prevBufferData[bufferName[5]]}
+		else:
+			self.currentBufferData = {bufferName: ""}
 		
 	def printBuffer(self):
 		b = self.currentBuffer
@@ -109,5 +118,6 @@ for y in x.stack:
 	x.currentBufferData[x.currentBuffer] += (y)
 x.printBuffer()
 x.selectBuffer("00000")
-x.readInput()
-x.printBuffer()
+x.currentBufferData.update({x.currentBuffer:"hello"})
+x.selectBuffer("00001")
+print x.currentBufferData
