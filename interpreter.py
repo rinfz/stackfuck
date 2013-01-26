@@ -26,8 +26,9 @@ class SfCommands:
 		# list of buffers, not buffer data
 		self.bufferArray = []
 		self.stack = []
-		self.currentBufferData = {}
-		self.prevBufferData = [{}]
+		# memory
+		self.currentBufferData = ""
+		self.prevBufferData = {}
 
 	def push(self, v):
 		"""
@@ -76,6 +77,9 @@ class SfCommands:
 		# check for buffer
 		if not self.bufferArray:
 			self.bufferArray.append("00000")
+		elif self.bufferCount > 10:
+			# if we ever have more than 10 buffers
+			self.bufferArray.append("000"+str(self.bufferCount))
 		else:
 			self.bufferArray.append("0000"+str(self.bufferCount))
 		self.bufferCount += 1
@@ -83,25 +87,42 @@ class SfCommands:
 	def selectBuffer(self, bufferName):
 		"""
 			Changes current buffer to user specified one
+			
+			Using:
+				* self.currentBufferData
+				* self.prevBufferData
+			CBD string since we know current buffer
+			PBD dict, when writing to PBD we loop like a proper slow bugger
 		"""
+		self.prevBufferData[self.currentBuffer] = self.currentBufferData
 		self.currentBuffer = bufferName
-		# use dict for buffer name => data in the buffer
-		# need to fix: memory for retaining previous data when moving between buffers
-		if self.prevBufferData:
-			self.currentBufferData = {bufferName: self.prevBufferData[bufferName[5]]}
+		if self.prevBufferData.get(bufferName):
+			self.currentBufferData = self.prevBufferData[bufferName]
 		else:
-			self.currentBufferData = {bufferName: ""}
+			self.currentBufferData = ""
 		
 	def printBuffer(self):
+		"""
+			Prints whatever is currently in the selected buffer.
+		"""
 		b = self.currentBuffer
 		if not b:
 			print "Cannot print. No buffer selected."
 		else:
-			print self.currentBufferData[b]
+			print self.currentBufferData
 			
 	def readInput(self):
-		usrIn = raw_input()
-		self.currentBufferData[self.currentBuffer] = usrIn
+		"""
+			Reads user  input  and writes it  into  selected   buffer.
+			N.B. this will overwrite any current data in the  selected 
+			buffer so it is best to have a buffer dedicated to reading
+			user input.
+		"""
+		if not self.currentBuffer:
+			print "Cannot read input. No buffer selected."
+		else:
+			usrIn = raw_input()
+			self.currentBufferData = str(usrIn)
 
 # debugging stuff
 x = SfCommands()
@@ -111,13 +132,15 @@ for c in "hello":
 	x.push(c)
 	
 x.toTop(3)
-print x.stack
+print "stack direct "+str(x.stack)
 
 x.selectBuffer("00001")
 for y in x.stack:
-	x.currentBufferData[x.currentBuffer] += (y)
+	x.currentBufferData += str(y)
 x.printBuffer()
 x.selectBuffer("00000")
-x.currentBufferData.update({x.currentBuffer:"hello"})
+x.printBuffer()
 x.selectBuffer("00001")
-print x.currentBufferData
+print "3rd"
+x.printBuffer()
+print "direct "+x.currentBufferData
