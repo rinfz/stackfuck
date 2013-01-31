@@ -1,1 +1,6 @@
-Stackfuck interpreter in python... More to come (also fuck git and vi)
+SF
+==
+
+Stackfuck interpreter in python.
+
+Sporadic development due to my lack of understanding of certain commands from the stackfuck specification.
