@@ -7,10 +7,10 @@ class Interpreter(object):
 
     def __init__(self, source_code):
         self.source_code = source_code
-
-    def run(self):
+        self.stack = []
         input_stream = InputStream(self.source_code)
         token_stream = TokenStream(input_stream)
-        parser = Parser(token_stream)
-        parser.parse_full()
-        print('\n'.join(str(x) for x in parser.ast))
+        self.ast = Parser(token_stream).parse_full()
+
+    def run(self):
+        print('\n'.join(str(x) for x in self.ast))
