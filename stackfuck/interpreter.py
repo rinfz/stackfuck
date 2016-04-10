@@ -38,7 +38,15 @@ class Interpreter(object):
     def run(self):
         i = 0
         while self.running:
-            node = self.ast[i]
+            if i > len(self.ast):
+                self.running = False
+                break
+
+            try:
+                node = self.ast[i]
+            except IndexError:
+                break
+
             if node.type == 'P':
                 self.stack.append(node.value)
 
@@ -55,7 +63,7 @@ class Interpreter(object):
                 self.current_buffer = node.value
 
             elif node.type == 'O':
-                print(self.buffers[self.current_buffer])
+                print(self.buffers[self.current_buffer], end="")
 
             elif node.type == 'I':
                 self.buffers[self.current_buffer] = input()
