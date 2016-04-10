@@ -11,9 +11,9 @@ INSTRUCTIONS = (
     'O', # Print current buffer
     'I', # Read line and set to buffer
     'G', # Goto xxxxx if top is non-zero
-    'g', # Relative goto
+    'g', # Relative goto (xxxxx)
     'N', # Goto xxxxx if top is zero
-    'n', # Relative goto
+    'n', # Relative goto (xxxxx)
     'L', # Goto label xxxxx if top is non-zero
     'l', # Goto label xxxxx if top is zero
     'K', # Unconditionally goto label xxxxx
@@ -53,7 +53,9 @@ INSTRUCTIONS_WITH_ARGS = {
     'V': 5,
     'S': 5,
     'G': 5,
+    'g': 5,
     'N': 5,
+    'n': 5,
     'L': 5,
     'l': 5,
     'K': 5,
