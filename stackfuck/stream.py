@@ -19,8 +19,11 @@ class InputStream(object):
             self.col += 1
         return ch
 
-    def peek(self):
-        return self.data[self.pos]
+    def peek(self, offset=0):
+        try:
+            return self.data[self.pos + offset]
+        except IndexError:
+            self.croak("Expected parameters but got EOF!")
 
     def eof(self):
         try:
