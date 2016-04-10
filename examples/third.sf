@@ -1,0 +1,64 @@
+# buffer 0 - stdout
+# buffer 1 - stdin
+# buffer 2 - stdcheck
+# buffer 3 - name
+# buffer 4 - age
+# buffer 5 - tempoary buffer
+CCCCCC
+
+$00000
+
+S00000
+
+# Choose an option:
+PxCPxhPxoPxoPxsPxePx PxaPxnPx PxoPxpPxtPxiPxoPxnPx:P010P010;O
+
+Px1Px.Px PxTPxePxlPxlPx PxnPxaPxmPxeP010
+Px2Px.Px PxTPxePxlPxlPx PxaPxgPxeP010
+Px3Px.Px PxSPxuPxmPxmPxaPxrPxyP010
+Px4Px.Px PxEPxxPxiPxtP010P010
+Px>Px 
+;O
+
+# Read input
+S00001IS00000P010;O
+
+S00002
+
+# Name
+)Px1;E00001l00001
+S00000
+PxNPxaPxmPxePx:Px ;O
+S00003I
+O
+
+K00000
+
+$00001
+
+# Age
+)Px2;E00001l00002
+S00000
+PxAPxgPxePx:Px ;O
+S00004I
+
+K00000
+
+$00002
+
+# Summary
+)Px3;E00001l00003
+S00000)
+PxNPxaPxmPxePx:Px a00003P010
+PxAPxgPxePx:Px a00004P010P010
+;O
+
+K00000
+
+$00003
+
+# Exit
+)Px4;E00001l00004
+X00000
+
+$00004

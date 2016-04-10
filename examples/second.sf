@@ -1,0 +1,32 @@
+# Buffer 0 - Output
+# Buffer 1 - Input
+# Buffer 2 - Check
+CCCS00000
+
+$00000
+# Select an option:
+#
+# 1. Example
+# 2. Exit
+PxCPxhPxoPxoPxsPxePx PxaPxnPx PxoPxpPxtPxiPxoPxnPx:P010P010
+Px1Px.Px PxEPxxPxaPxmPxpPxlPxeP010
+Px2Px.Px PxEPxxPxiPxtP010P010Px>Px ;O
+
+# Select input buffer
+S00001I
+
+# Add line
+S00000P010;O
+
+# Select check buffer
+S00002
+
+# 1
+)Px1;E00001l00001
+PxHPxePxlPxlPxoPx,Px PxwPxoPxrPxlPxdPx!P010P010;O
+K00000
+$00001
+
+# 2
+)Px2;E00001l00000
+X00000

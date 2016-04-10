@@ -62,6 +62,7 @@ INSTRUCTIONS_WITH_ARGS = {
     'X': 5,
     '$': 5,
     'A': 5,
+    'a': 5,
     '?': 5,
     'Z': 5,
     'E': 5,
