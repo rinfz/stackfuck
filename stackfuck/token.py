@@ -11,6 +11,9 @@ class Token(object):
         # everything so long as we already have a type and value
         self.__dict__.update(kwargs)
 
+    def __str__(self):
+        return str(self.__dict__)
+
 
 class TokenStream(object):
 
@@ -28,7 +31,7 @@ class TokenStream(object):
     def is_digit(self, ch):
         return ch.isdigit()
 
-    def is_whitespace(ch):
+    def is_whitespace(self, ch):
         return ch in " \t\n"
 
     def read_while(self, pred):
@@ -37,38 +40,10 @@ class TokenStream(object):
             val.append(self.data.next())
         return ''.join(val)
 
-    def read_number(self):
-        has_dot = False
-        def _read_number(ch):
-            nonlocal has_dot
-            if ch == ".":
-                if has_dot:
-                    return False
-                has_dot = True
-                return True
-            return self.is_digit(ch)
-        number = self.read_while(_read_number)
-        cast = float if has_dot else int
-        return Token(type="num", value=cast(number))
-
-    def read_push(self):
-        # special case for push (P) since it has variable length args
-        if self.data.peek(offset=1) == 'x':
-            # reading a char
-            self.data.next() # discard the 'x' used to denote that its a char
-            value = self.data.next()
-        else:
-            # reading a number
-            value = ''.join(self.data.next() for _ in range(3))
-            if '.' in value:
-                value = float(value)
-            else:
-                value = int(value.lstrip('0'))
-        return Token(type="call", func="P", value=value)
-
     def read_kw_with_args(self, ch):
-        value = ''.join(self.data.next() for _ in range INSTRUCTIONS_WITH_ARGS[ch])
-        return Token(type="call", func=ch, value=value)
+        value = ''.join(self.data.next() for _ in range(INSTRUCTIONS_WITH_ARGS[ch]))
+        self.data.next()
+        return Token(type=ch, value=value)
 
     def _skip_comment(self, ch):
         return ch != '\n'
@@ -77,20 +52,35 @@ class TokenStream(object):
         self.read_while(self._skip_comment)
 
     def read_next(self):
-        read_while(self.is_whitespace)
+        self.read_while(self.is_whitespace)
+
         if self.data.eof():
             return None
+
         ch = self.data.peek()
+
         if ch == '#':
             self.skip_comment()
             return self.read_next()
+
         if self.has_args(ch):
             if ch == 'P':
-                return self.read_push()
+                value = self.data.next()
+                if value == 'x':
+                    # reading a char
+                    value = self.data.next()
+                else:
+                    # reading a num
+                    value = int(value + self.data.next_n(2))
+                self.data.next()
+                return Token(type="P", value=value)
             else:
                 return self.read_kw_with_args(ch)
+
         if self.is_keyword(ch):
-            return Token(type="call", func=ch, value=None)
+            self.data.next()
+            return Token(type=ch, value=None)
+
         self.data.croak("Can't handle character: {}".format(ch))
 
     def peek(self):

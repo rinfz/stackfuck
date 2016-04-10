@@ -19,6 +19,9 @@ class InputStream(object):
             self.col += 1
         return ch
 
+    def next_n(self, n):
+        return ''.join(self.next() for _ in range(n))
+
     def peek(self, offset=0):
         try:
             return self.data[self.pos + offset]
@@ -27,9 +30,9 @@ class InputStream(object):
 
     def eof(self):
         try:
-            self.peek()
+            self.peek(offset=1)
             return False
-        except IndexError:
+        except:
             return True
 
     def croak(self, message="An unknown error occurred"):
